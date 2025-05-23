@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Real Estate Management</title>
+  <title>Login - Real Estate Management</title>
   <style>
     body {
       margin: 0;
@@ -20,7 +20,6 @@
       background-color: #444;
       display: flex;
       justify-content: center;
-      font-size: larger;
     }
     nav a {
       color: white;
@@ -32,43 +31,53 @@
       background-color: #555;
     }
     .container {
+      max-width: 400px;
+      margin: 40px auto;
       padding: 2rem;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+    h2 {
       text-align: center;
-      background-image: url(lucknow\ real\ estate\ guide.png);
-      height: 60vh;
     }
-    .container h2
-    {
-      color: white;
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
     }
-    .container p
-    {
-      color: white;
-    }
-    .cta-button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
       border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #02adc4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
       font-size: large;
     }
-    .cta-button:hover {
-      background-color: #0056b3;
+    button:hover {
+      background-color: #00759c;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Welcome to Real Estate Management</h1>
-    <p>Buy, sell, or manage properties with ease.</p>
+    <h1>Real Estate Management</h1>
   </header>
 
   <nav>
-    <a href="index.html">Home</a>
+    <a href="main.html">Home</a>
     <a href="register.html">Register</a>
     <a href="login.html">Login</a>
     <a href="properties.html">View Properties</a>
@@ -76,9 +85,16 @@
   </nav>
 
   <div class="container">
-    <h2>Your Gateway to smarter Real-Estate Management</h2>
-    <p>Use our platform to list properties, manage them, or find your dream home!</p>
-    <a class="cta-button" href="register.html">Get Started</a>
+    <h2>User Login</h2>
+    <form method="post">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Login</button>
+    </form>
   </div>
 
 </body>

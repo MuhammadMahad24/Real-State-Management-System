@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Properties - Real Estate Management</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background-color: #444;
+      display: flex;
+      justify-content: center;
+    }
+    nav a {
+      color: white;
+      padding: 1rem;
+      text-decoration: none;
+    }
+    nav a:hover {
+      background-color: #555;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .property-form, .property-list {
+      margin-bottom: 2rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .property-card {
+      background-color: white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .actions {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Real Estate Management</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="register.html">Register</a>
+    <a href="login.html">Login</a>
+    <a href="properties.html">View Properties</a>
+    <a href="my-properties.html">My Properties</a>
+  </nav>
+
+  <div class="container">
+    <h2>Manage My Properties</h2>
+
+    <!-- Add New Property Form -->
+    <div class="property-form">
+      <h3>Add New Property</h3>
+      <form>
+        <input type="text" placeholder="Property Title" required />
+        <input type="text" placeholder="Location" required />
+        <input type="text" placeholder="Price" required />
+        <textarea placeholder="Description" rows="4"></textarea>
+        <button type="submit">Add Property</button>
+      </form>
+    </div>
+
+    <!-- User's Properties List -->
+    <div class="property-list">
+      <h3>My Listings</h3>
+
+      <div class="property-card">
+        <h4>My 3 BHK Flat</h4>
+        <p>Location: Alambagh, Lucknow</p>
+        <p>Price: ₹55 Lakhs</p>
+        <div class="actions">
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
+      </div>
+
+      <!-- Repeat more cards here -->
+    </div>
+  </div>
+
+</body>
+</html>

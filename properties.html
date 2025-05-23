@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Real Estate Management</title>
+  <title>All Properties - Real Estate Management</title>
   <style>
     body {
       margin: 0;
@@ -20,51 +20,34 @@
       background-color: #444;
       display: flex;
       justify-content: center;
-      font-size: larger;
     }
     nav a {
       color: white;
       padding: 1rem;
       text-decoration: none;
-      transition: background 0.3s;
     }
     nav a:hover {
       background-color: #555;
     }
     .container {
       padding: 2rem;
-      text-align: center;
-      background-image: url(lucknow\ real\ estate\ guide.png);
-      height: 60vh;
     }
-    .container h2
-    {
-      color: white;
+    .property-card {
+      background-color: white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
-    .container p
-    {
-      color: white;
-    }
-    .cta-button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: large;
-    }
-    .cta-button:hover {
-      background-color: #0056b3;
+    .property-card h3 {
+      margin: 0 0 10px;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Welcome to Real Estate Management</h1>
-    <p>Buy, sell, or manage properties with ease.</p>
+    <h1>Real Estate Management</h1>
   </header>
 
   <nav>
@@ -76,9 +59,21 @@
   </nav>
 
   <div class="container">
-    <h2>Your Gateway to smarter Real-Estate Management</h2>
-    <p>Use our platform to list properties, manage them, or find your dream home!</p>
-    <a class="cta-button" href="register.html">Get Started</a>
+    <h2>All Properties</h2>
+
+    <div class="property-card">
+      <h3>2 BHK Apartment in Lucknow</h3>
+      <p>Price: ₹45 Lakhs</p>
+      <p>Location: Gomti Nagar, Lucknow</p>
+    </div>
+
+    <div class="property-card">
+      <h3>Plot for Sale - 1000 sqft</h3>
+      <p>Price: ₹20 Lakhs</p>
+      <p>Location: Faizabad Road, Lucknow</p>
+    </div>
+
+    <!-- Add more static or dynamic listings here -->
   </div>
 
 </body>
