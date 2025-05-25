@@ -60,17 +60,22 @@
     }
   </style>
 </head>
+
+
 <body>
 
   <header>
     <h1>Welcome to Real Estate Management</h1>
-    <p>Buy, sell, or manage properties with ease.</p>
+    <h2>Buy, sell, or manage properties with ease.</h2>
+    <div id="welcome-message" style="text-align: center; padding: 1rem; color: white;"></div>
+
   </header>
 
   <nav>
-    <a href="index.html">Home</a>
+    <a href="main.html">Home</a>
     <a href="register.html">Register</a>
     <a href="login.html">Login</a>
+    <a href="account.html">Account Settings</a>
     <a href="properties.html">View Properties</a>
     <a href="my-properties.html">My Properties</a>
   </nav>
@@ -82,4 +87,16 @@
   </div>
 
 </body>
+<script>
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (user) {
+    const welcomeElement = document.getElementById("welcome-message");
+    welcomeElement.innerHTML = `
+      <strong>${user.name}</strong> Welcome!!<br>
+      ${user.email}
+    `;
+  }
+</script>
+
 </html>
