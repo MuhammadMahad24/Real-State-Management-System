@@ -58,6 +58,71 @@
     .cta-button:hover {
       background-color: #0056b3;
     }
+    /* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Add these animation styles to existing elements */
+header {
+  animation: fadeIn 1s ease-out;
+}
+
+nav a {
+  transition: background 0.3s, transform 0.3s;
+}
+nav a:hover {
+  background-color: #555;
+  transform: scale(1.05);
+}
+
+.container {
+  animation: slideUp 1s ease-out;
+  background-size: cover;
+  background-position: center;
+}
+
+.container h2,
+.container p {
+  animation: fadeInUp 1s ease forwards;
+}
+
+.cta-button {
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.cta-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+#welcome-message {
+  animation: fadeIn 1s ease-out 0.5s forwards;
+}
+
   </style>
 </head>
 
@@ -65,9 +130,10 @@
 <body>
 
   <header>
-    <h1>Welcome to Real Estate Management</h1>
-    <h2>Buy, sell, or manage properties with ease.</h2>
-    <div id="welcome-message" style="text-align: center; padding: 1rem; color: white;"></div>
+    <marquee behavior="alternate" direction="right"><h1>Welcome to Real Estate Management</h1></marquee>
+    <marquee behavior="alternate" direction="left"><h1>Buy, sell, or manage properties with ease.</h1></marquee>
+    <div id="welcome-message"></div>
+
 
   </header>
 
