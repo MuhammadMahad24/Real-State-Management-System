@@ -44,6 +44,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <header>
@@ -51,9 +52,10 @@
   </header>
 
   <nav>
-    <a href="index.html">Home</a>
+    <a href="main.html">Home</a>
     <a href="register.html">Register</a>
     <a href="login.html">Login</a>
+    <a href="account.html">Account Settings</a>
     <a href="properties.html">View Properties</a>
     <a href="my-properties.html">My Properties</a>
   </nav>
@@ -61,20 +63,45 @@
   <div class="container">
     <h2>All Properties</h2>
 
-    <div class="property-card">
-      <h3>2 BHK Apartment in Lucknow</h3>
-      <p>Price: ₹45 Lakhs</p>
-      <p>Location: Gomti Nagar, Lucknow</p>
-    </div>
-
-    <div class="property-card">
-      <h3>Plot for Sale - 1000 sqft</h3>
-      <p>Price: ₹20 Lakhs</p>
-      <p>Location: Faizabad Road, Lucknow</p>
-    </div>
+ 
 
     <!-- Add more static or dynamic listings here -->
   </div>
 
 </body>
+<script>
+  // Get the container where properties will be shown
+  const container = document.querySelector('.container');
+
+  // Get properties from localStorage
+  const properties = JSON.parse(localStorage.getItem('properties')) || [];
+
+  // Check if any properties exist
+  if (properties.length > 0) {
+    // Remove hardcoded static properties
+    const allCards = document.querySelectorAll('.property-card');
+    allCards.forEach(card => card.remove());
+
+    // Add each property dynamically
+    properties.forEach(property => {
+      const card = document.createElement('div');
+      card.className = 'property-card';
+
+      card.innerHTML = `
+        <h3>${property.title}</h3>
+        <p>Price: ${property.price}</p>
+        <p>Location: ${property.location}</p>
+        <p>Owner: ${property.ownerName} (${property.ownerEmail})</p>
+      `;
+
+      container.appendChild(card);
+    });
+  } else {
+    // No properties found
+    const msg = document.createElement('p');
+    msg.textContent = "No properties listed yet.";
+    container.appendChild(msg);
+  }
+</script>
+
 </html>

@@ -70,6 +70,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <header>
@@ -80,6 +81,7 @@
     <a href="main.html">Home</a>
     <a href="register.html">Register</a>
     <a href="login.html">Login</a>
+    <a href="account.html">Account Settings</a>
     <a href="properties.html">View Properties</a>
     <a href="my-properties.html">My Properties</a>
   </nav>
@@ -98,4 +100,28 @@
   </div>
 
 </body>
+<script>
+  document.querySelector("form").addEventListener("submit", function (e) {
+    e.preventDefault(); // Prevent form from submitting normally
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    // Get stored users
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Find matching user
+    const matchedUser = users.find(user => user.email === email && user.password === password);
+
+    if (matchedUser) {
+      // Save current logged-in user in localStorage
+      localStorage.setItem("loggedInUser", JSON.stringify(matchedUser));
+      alert("Login successful!");
+      window.location.href = "my-properties.html"; // Redirect after login
+    } else {
+      alert("Invalid email or password.");
+    }
+  });
+</script>
+
 </html>

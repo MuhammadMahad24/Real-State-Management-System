@@ -1,117 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Properties - Real Estate Management</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-    }
-    header {
-      background-color: #333;
-      color: #fff;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav {
-      background-color: #444;
-      display: flex;
-      justify-content: center;
-    }
-    nav a {
-      color: white;
-      padding: 1rem;
-      text-decoration: none;
-    }
-    nav a:hover {
-      background-color: #555;
-    }
-    .container {
-      padding: 2rem;
-    }
-    .property-form, .property-list {
-      margin-bottom: 2rem;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      margin-bottom: 1rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .property-card {
-      background-color: white;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-    .actions {
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Properties - Real Estate Management</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #444;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            padding: 1rem;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        .container {
+            padding: 2rem;
+        }
+
+        .property-form,
+        .property-list {
+            margin-bottom: 2rem;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .property-card {
+            background-color: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .actions {
+            margin-top: 10px;
+        }
+    </style>
 </head>
+
 <body>
 
-  <header>
-    <h1>Real Estate Management</h1>
-  </header>
+    <header>
+        <h1>Real Estate Management</h1>
+    </header>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="register.html">Register</a>
-    <a href="login.html">Login</a>
-    <a href="properties.html">View Properties</a>
-    <a href="my-properties.html">My Properties</a>
-  </nav>
+    <nav>
+        <a href="main.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="login.html">Login</a>
+        <a href="account.html">Account Settings</a>
+        <a href="properties.html">View Properties</a>
+        <a href="my-properties.html">My Properties</a>
+    </nav>
 
-  <div class="container">
-    <h2>Manage My Properties</h2>
+    <div class="container">
+        <h2>Manage My Properties</h2>
 
-    <!-- Add New Property Form -->
-    <div class="property-form">
-      <h3>Add New Property</h3>
-      <form>
-        <input type="text" placeholder="Property Title" required />
-        <input type="text" placeholder="Location" required />
-        <input type="text" placeholder="Price" required />
-        <textarea placeholder="Description" rows="4"></textarea>
-        <button type="submit">Add Property</button>
-      </form>
-    </div>
-
-    <!-- User's Properties List -->
-    <div class="property-list">
-      <h3>My Listings</h3>
-
-      <div class="property-card">
-        <h4>My 3 BHK Flat</h4>
-        <p>Location: Alambagh, Lucknow</p>
-        <p>Price: ₹55 Lakhs</p>
-        <div class="actions">
-          <button>Edit</button>
-          <button>Delete</button>
+        <!-- Add New Property Form -->
+        <div class="property-form">
+            <h3>Add New Property</h3>
+            <form>
+                <input type="text" placeholder="Property Title" required />
+                <input type="text" placeholder="Location" required />
+                <input type="text" placeholder="Price" required />
+                <textarea placeholder="Description" rows="4"></textarea>
+                <button type="submit">Add Property</button>
+            </form>
         </div>
-      </div>
 
-      <!-- Repeat more cards here -->
+        <!-- User's Properties List -->
+        <div class="property-list">
+            <h3>My Listings</h3>
+
+            <div class="property-card">
+                <h4>My 3 BHK Flat</h4>
+                <p>Location: Alambagh, Lucknow</p>
+                <p>Price: ₹55 Lakhs</p>
+                <div class="actions">
+                    <button>Edit</button>
+                    <button>Delete</button>
+                </div>
+            </div>
+
+            <!-- Repeat more cards here -->
+        </div>
     </div>
-  </div>
 
 </body>
+<script>
+  const form = document.querySelector(".property-form form");
+  const titleInput = form.querySelector('input[placeholder="Property Title"]');
+  const locationInput = form.querySelector('input[placeholder="Location"]');
+  const priceInput = form.querySelector('input[placeholder="Price"]');
+  const descriptionInput = form.querySelector("textarea");
+  const listContainer = document.querySelector(".property-list");
+
+  // Get current user from localStorage
+  const currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  // Redirect to login if not logged in
+  if (!currentUser) {
+    alert("Please login first.");
+    window.location.href = "login.html";
+  }
+
+  // Load existing properties
+  let properties = JSON.parse(localStorage.getItem("properties")) || [];
+
+  function renderMyProperties() {
+    const myProperties = properties.filter(p => p.ownerEmail === currentUser.email);
+    const oldCards = listContainer.querySelectorAll(".property-card");
+    oldCards.forEach(card => card.remove());
+
+    if (myProperties.length === 0) {
+      const msg = document.createElement("p");
+      msg.textContent = "You have not listed any properties.";
+      listContainer.appendChild(msg);
+      return;
+    }
+
+    myProperties.forEach((property, index) => {
+      const card = document.createElement("div");
+      card.className = "property-card";
+      card.innerHTML = `
+        <h4>${property.title}</h4>
+        <p>Location: ${property.location}</p>
+        <p>Price: ${property.price}</p>
+        <p>Description: ${property.description}</p>
+        <div class="actions">
+          <button onclick="editProperty(${index})">Edit</button>
+          <button onclick="deleteProperty(${index})">Delete</button>
+        </div>
+      `;
+      listContainer.appendChild(card);
+    });
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const newProperty = {
+      title: titleInput.value,
+      location: locationInput.value,
+      price: priceInput.value,
+      description: descriptionInput.value,
+      ownerEmail: currentUser.email,
+      ownerName: currentUser.name
+    };
+    properties.push(newProperty);
+    localStorage.setItem("properties", JSON.stringify(properties));
+    form.reset();
+    renderMyProperties();
+  });
+
+  window.editProperty = function (myIndex) {
+    // Get my own properties to find correct one
+    const myProperties = properties.filter(p => p.ownerEmail === currentUser.email);
+    const propertyToEdit = myProperties[myIndex];
+    const globalIndex = properties.findIndex(
+      p => p.ownerEmail === currentUser.email && p.title === propertyToEdit.title && p.location === propertyToEdit.location
+    );
+
+    const newTitle = prompt("Edit Title:", propertyToEdit.title);
+    const newLocation = prompt("Edit Location:", propertyToEdit.location);
+    const newPrice = prompt("Edit Price:", propertyToEdit.price);
+    const newDescription = prompt("Edit Description:", propertyToEdit.description);
+
+    if (newTitle && newLocation && newPrice) {
+      properties[globalIndex] = {
+        ...properties[globalIndex],
+        title: newTitle,
+        location: newLocation,
+        price: newPrice,
+        description: newDescription
+      };
+      localStorage.setItem("properties", JSON.stringify(properties));
+      renderMyProperties();
+    }
+  };
+
+  window.deleteProperty = function (myIndex) {
+    const myProperties = properties.filter(p => p.ownerEmail === currentUser.email);
+    const propertyToDelete = myProperties[myIndex];
+    const globalIndex = properties.findIndex(
+      p => p.ownerEmail === currentUser.email && p.title === propertyToDelete.title && p.location === propertyToDelete.location
+    );
+    if (confirm("Are you sure you want to delete this property?")) {
+      properties.splice(globalIndex, 1);
+      localStorage.setItem("properties", JSON.stringify(properties));
+      renderMyProperties();
+    }
+  };
+
+  // Initial render
+  renderMyProperties();
+</script>
+
 </html>
