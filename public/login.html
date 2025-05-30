@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Real Estate Management</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background-color: #444;
+      display: flex;
+      justify-content: center;
+    }
+    nav a {
+      color: white;
+      padding: 1rem;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    nav a:hover {
+      background-color: #555;
+    }
+    .container {
+      max-width: 400px;
+      margin: 40px auto;
+      padding: 2rem;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #02adc4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: large;
+    }
+    button:hover {
+      background-color: #00759c;
+    }
+    /* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply animation to container */
+.container {
+  animation: fadeInUp 1s ease-out;
+}
+
+/* Add focus & hover animation */
+input[type="email"],
+input[type="password"],
+button {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  box-shadow: 0 0 8px rgba(2, 173, 196, 0.5);
+  transform: scale(1.02);
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+  </style>
+  
+</head>
+
+<body>
+
+  <header>
+    <h2 style="animation: fadeInUp 1s ease-out 0.3s forwards;">User Login</h2>
+
+  </header>
+
+  <nav>
+    <a href="main.html">Home</a>
+    <a href="register.html">Register</a>
+    <a href="login.html">Login</a>
+    <a href="account.html">Account Settings</a>
+    <a href="properties.html">View Properties</a>
+    <a href="my-properties.html">My Properties</a>
+  </nav>
+
+  <div class="container">
+    <h2>User Login</h2>
+    <form method="post">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+</body>
+<script>
+  document.querySelector("form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    try {
+      const res = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      alert(data.message);
+
+      if (res.ok) {
+        // Store user in localStorage
+        localStorage.setItem('loggedInUser', JSON.stringify({ id: 1, email: "user@example.com" }));
+
+        window.location.href = "my-properties.html";
+      }
+    } catch (error) {
+      alert("Login failed. Server error.");
+      console.error(error);
+    }
+  });
+</script>
+
+
+</html>

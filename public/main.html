@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Real Estate Management</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background-color: #444;
+      display: flex;
+      justify-content: center;
+      font-size: larger;
+    }
+    nav a {
+      color: white;
+      padding: 1rem;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    nav a:hover {
+      background-color: #555;
+    }
+    .container {
+      padding: 2rem;
+      text-align: center;
+      background-image: url(lucknow\ real\ estate\ guide.png);
+      height: 60vh;
+    }
+    .container h2
+    {
+      color: white;
+    }
+    .container p
+    {
+      color: white;
+    }
+    .cta-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: large;
+    }
+    .cta-button:hover {
+      background-color: #0056b3;
+    }
+    /* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Add these animation styles to existing elements */
+header {
+  animation: fadeIn 1s ease-out;
+}
+
+nav a {
+  transition: background 0.3s, transform 0.3s;
+}
+nav a:hover {
+  background-color: #555;
+  transform: scale(1.05);
+}
+
+.container {
+  animation: slideUp 1s ease-out;
+  background-size: cover;
+  background-position: center;
+}
+
+.container h2,
+.container p {
+  animation: fadeInUp 1s ease forwards;
+}
+
+.cta-button {
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.cta-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+#welcome-message {
+  animation: fadeIn 1s ease-out 0.5s forwards;
+}
+
+  </style>
+</head>
+
+
+<body>
+
+  <header>
+    <marquee behavior="alternate" direction="right"><h1>Welcome to Real Estate Management</h1></marquee>
+    <marquee behavior="alternate" direction="left"><h1>Buy, sell, or manage properties with ease.</h1></marquee>
+    <div id="welcome-message"></div>
+
+
+  </header>
+
+  <nav>
+    <a href="main.html">Home</a>
+    <a href="register.html">Register</a>
+    <a href="login.html">Login</a>
+    <a href="account.html">Account Settings</a>
+    <a href="properties.html">View Properties</a>
+    <a href="my-properties.html">My Properties</a>
+  </nav>
+
+  <div class="container">
+    <h2>Your Gateway to smarter Real-Estate Management</h2>
+    <p>Use our platform to list properties, manage them, or find your dream home!</p>
+    <a class="cta-button" href="register.html">Get Started</a>
+  </div>
+
+</body>
+<script>
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (user) {
+    const welcomeElement = document.getElementById("welcome-message");
+    welcomeElement.innerHTML = `
+      <strong>${user.name}</strong> Welcome!!<br>
+      ${user.email}
+    `;
+  }
+</script>
+
+</html>

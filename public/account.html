@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Account Settings</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background-color: #444;
+      display: flex;
+      justify-content: center;
+    }
+    nav a {
+      color: white;
+      padding: 1rem;
+      text-decoration: none;
+    }
+    nav a:hover {
+      background-color: #555;
+    }
+    .container {
+      max-width: 400px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #save-btn {
+      background-color: #007bff;
+      color: white;
+    }
+    #logout-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+    /* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animate container */
+.container {
+  animation: fadeInUp 1s ease-out;
+}
+
+/* Animate form fields and buttons */
+input,
+button {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+  transform: scale(1.02);
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <h2 style="animation: fadeInUp 1s ease-out 0.2s forwards;">Edit Account Info</h2>
+
+  </header>
+
+  <nav>
+    <a href="main.html">Home</a>
+    <a href="register.html">Register</a>
+    <a href="login.html">Login</a>
+    <a href="account.html">Account Settings</a>
+    <a href="properties.html">View Properties</a>
+    <a href="my-properties.html">My Properties</a>
+    
+  </nav>
+
+  <div class="container">
+    <h2>Edit Account Info</h2>
+    <form id="accountForm">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required>
+
+      <button type="submit" id="save-btn">Save Changes</button>
+      <button type="button" id="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+      alert("Please login first.");
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("name").value = user.name;
+      document.getElementById("email").value = user.email;
+      document.getElementById("password").value = user.password;
+    }
+
+    document.getElementById("accountForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const updatedUser = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+      };
+
+      // Update in localStorage users list
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      users = users.map(u => u.email === user.email ? updatedUser : u);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      // Update loggedInUser
+      localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+      alert("Account updated successfully!");
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", function() {
+      localStorage.removeItem("loggedInUser");
+      alert("You have been logged out.");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>

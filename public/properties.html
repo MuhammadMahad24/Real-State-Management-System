@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Properties - Real Estate Management</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #444;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav a {
+      color: white;
+      padding: 1rem;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      background-color: #555;
+    }
+
+    .container {
+      padding: 2rem;
+    }
+
+    .property-card {
+      background-color: white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .property-card h3 {
+      margin: 0 0 10px;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Animate container */
+    .container {
+      animation: fadeInUp 1s ease-out;
+    }
+
+    /* Animate property cards */
+    .property-card {
+      opacity: 0;
+      animation: fadeInUp 0.7s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    /* Add hover effect for interactivity */
+    .property-card:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Real Estate Management</h1>
+  </header>
+
+  <nav>
+    <a href="main.html">Home</a>
+    <a href="register.html">Register</a>
+    <a href="login.html">Login</a>
+    <a href="account.html">Account Settings</a>
+    <a href="properties.html">View Properties</a>
+    <a href="my-properties.html">My Properties</a>
+  </nav>
+
+  <div class="container">
+    <h2>All Properties</h2>
+
+
+
+    <!-- Add more static or dynamic listings here -->
+  </div>
+
+</body>
+<script>
+  const container = document.querySelector('.container');
+
+  // Fetch properties from backend API
+  fetch('/api/properties')
+    .then(res => res.json())
+    .then(properties => {
+      renderProperties(properties);
+    })
+    .catch(err => {
+      console.error("Failed to load properties", err);
+      const msg = document.createElement('p');
+      msg.textContent = "Error fetching property listings.";
+      container.appendChild(msg);
+    });
+
+  function renderProperties(properties) {
+    if (!properties || properties.length === 0) {
+      const msg = document.createElement('p');
+      msg.textContent = "No properties listed yet.";
+      container.appendChild(msg);
+      return;
+    }
+
+    properties.forEach((property, index) => {
+      const card = document.createElement('div');
+      card.className = 'property-card';
+      card.style.animationDelay = `${0.2 + index * 0.1}s`;
+
+      card.innerHTML = `
+        <h3>${property.title}</h3>
+        <p>Price: ${property.price}</p>
+        <p>Location: ${property.location}</p>
+        <p>Owner: ${property.ownerName || "N/A"} (${property.ownerEmail || "N/A"})</p>
+        ${property.image_url ? `<img src="/uploads/${property.image_url}" style="max-width: 100%; height: auto; margin-top: 10px;" />` : ''}
+        ${property.video_url ? `<video controls style="max-width: 100%; margin-top: 10px;"><source src="/uploads/${property.video_url}" type="video/mp4">Your browser does not support the video tag.</video>` : ''}
+      `;
+
+      container.appendChild(card);
+    });
+  }
+</script>
+
+
+</html>

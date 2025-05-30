@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Properties - Real Estate Management</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #444;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            padding: 1rem;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        .container {
+            padding: 2rem;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .property-form,
+        .property-list {
+            margin-bottom: 2rem;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .property-card {
+            background-color: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .actions {
+            margin-top: 10px;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .property-card:hover {
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Real Estate Management</h1>
+    </header>
+
+    <nav>
+        <a href="main.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="login.html">Login</a>
+        <a href="account.html">Account Settings</a>
+        <a href="properties.html">View Properties</a>
+        <a href="my-properties.html">My Properties</a>
+    </nav>
+
+    <div class="container">
+        <h2>Manage My Properties</h2>
+
+        <div class="property-form">
+            <h3>Add New Property</h3>
+            <form id="propertyForm" enctype="multipart/form-data">
+                <input type="text" name="title" placeholder="Property Title" required />
+                <input type="text" name="location" placeholder="Location" required />
+                <input type="number" step="0.01" name="price" placeholder="Price" required />
+                <textarea name="description" placeholder="Description" rows="4"></textarea>
+
+                <label>Upload Image:</label>
+                <input type="file" name="image" accept="image/*" />
+
+                <label>Upload Video:</label>
+                <input type="file" name="video" accept="video/*" />
+
+                <button type="submit">Add Property</button>
+            </form>
+        </div>
+
+        <div class="property-list">
+            <h3>My Listings</h3>
+            <div id="propertiesContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("propertyForm");
+        const listContainer = document.getElementById("propertiesContainer");
+
+        // Get logged-in user info from localStorage (must be set at login)
+        const currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!currentUser || !currentUser.id) {
+            alert("Please login first to manage properties.");
+            window.location.href = "login.html";
+        }
+
+        async function fetchMyProperties() {
+            try {
+                // Ensure ownerId is available before fetching
+                if (!currentUser || !currentUser.id) {
+                    console.error("No current user ID found for fetching properties.");
+                    return;
+                }
+
+                const res = await fetch(`/api/properties?ownerId=${currentUser.id}`);
+                if (!res.ok) {
+                    const errorText = await res.text(); // Read the response text for more details
+                    throw new Error(`HTTP error! status: ${res.status}, message: ${errorText}`);
+                }
+                const properties = await res.json();
+                renderMyProperties(properties);
+            } catch (err) {
+                console.error("Failed to fetch properties:", err);
+                listContainer.innerHTML = `<p style="color: red;">Error loading properties: ${err.message || err}</p>`;
+            }
+        }
+
+        function renderMyProperties(properties) {
+            listContainer.innerHTML = '';
+            if (properties.length === 0) {
+                listContainer.innerHTML = "<p>You have not listed any properties yet. Add one above!</p>";
+                return;
+            }
+
+            properties.forEach((property, index) => {
+                const card = document.createElement("div");
+                card.className = "property-card";
+                card.style.animationDelay = `${0.2 + index * 0.1}s`; // Stagger animation
+
+                card.innerHTML = `
+                    <h4>${property.title}</h4>
+                    <p><strong>Location:</strong> ${property.location}</p>
+                    <p><strong>Price:</strong> ₹${property.price}</p>
+                    <p><strong>Description:</strong> ${property.description || 'No description provided.'}</p>
+                    ${property.image_url ? `<img src="/uploads/${property.image_url}" alt="Property Image" style="max-width: 100%; height: auto; margin-top: 10px;" />` : ''}
+                    ${property.video_url ? `<video controls style="max-width: 100%; margin-top: 10px;"><source src="/uploads/${property.video_url}" type="video/mp4" /></video>` : ''}
+                    <div class="actions">
+                        <button onclick="editProperty(${property.id})">Edit</button>
+                        <button onclick="deleteProperty(${property.id})">Delete</button>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            // Ensure ownerId is appended only if currentUser and its id exist
+            if (currentUser && currentUser.id) {
+                formData.append("ownerId", currentUser.id);
+            } else {
+                alert("Error: User not logged in. Please log in again.");
+                window.location.href = "login.html"; // Redirect if ownerId is truly missing
+                return;
+            }
+
+            try {
+                const res = await fetch("/api/properties", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (res.ok) {
+                    alert("Property added successfully!");
+                    form.reset(); // Clear form fields
+                    fetchMyProperties(); // Refresh the list
+                } else {
+                    // Attempt to parse JSON error message from the server
+                    const errorData = await res.json();
+                    alert(`Failed to add property: ${errorData.message || 'Unknown error. Check console for details.'}`);
+                    console.error("Server response error:", errorData);
+                }
+            } catch (err) {
+                console.error("Error uploading property:", err);
+                alert("An error occurred during property upload. Please check your internet connection or server status.");
+            }
+        });
+
+        window.editProperty = function (id) {
+            // In a real application, you'd navigate to an edit form
+            // e.g., window.location.href = `edit-property.html?id=${id}`;
+            alert(`Edit functionality for property ID ${id} not implemented yet.`);
+        };
+
+        window.deleteProperty = async function (id) {
+            if (!confirm("Are you sure you want to delete this property? This action cannot be undone.")) return;
+
+            try {
+                const res = await fetch(`/api/properties/${id}`, { method: "DELETE" });
+                if (res.ok) {
+                    alert("Property deleted successfully!");
+                    fetchMyProperties(); // Refresh the list
+                } else {
+                    const errorData = await res.json();
+                    alert(`Failed to delete property: ${errorData.message || 'Unknown error.'}`);
+                    console.error("Server deletion error:", errorData);
+                }
+            } catch (err) {
+                console.error("Error deleting property:", err);
+                alert("An error occurred during property deletion. Check console.");
+            }
+        };
+
+        // Initial fetch of user's properties when the page loads
+        document.addEventListener('DOMContentLoaded', fetchMyProperties);
+    </script>
+</body>
+
+</html>
