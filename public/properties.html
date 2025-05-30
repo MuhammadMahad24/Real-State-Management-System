@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>All Properties - Real Estate Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
       margin: 0;
@@ -35,23 +35,59 @@
       background-color: #555;
     }
 
-    .container {
-      padding: 2rem;
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    #property-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
     }
 
     .property-card {
       background-color: white;
       padding: 1rem;
-      margin-bottom: 1rem;
       border-radius: 10px;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      animation: fadeInUp 0.6s ease forwards;
+      width: 350px;
+    }
+
+    .property-card:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s ease;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .property-card img,
+    .property-card video {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
     }
 
     .property-card h3 {
-      margin: 0 0 10px;
+      margin-top: 0;
+      color: #007bff;
     }
 
-    /* Animations */
+    .property-card p {
+      margin: 6px 0;
+      color: #555;
+    }
+
+    .no-video {
+      font-style: italic;
+      color: #999;
+    }
+
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -62,25 +98,6 @@
         opacity: 1;
         transform: translateY(0);
       }
-    }
-
-    /* Animate container */
-    .container {
-      animation: fadeInUp 1s ease-out;
-    }
-
-    /* Animate property cards */
-    .property-card {
-      opacity: 0;
-      animation: fadeInUp 0.7s ease forwards;
-      animation-delay: 0.3s;
-    }
-
-    /* Add hover effect for interactivity */
-    .property-card:hover {
-      transform: scale(1.02);
-      transition: transform 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
   </style>
 </head>
@@ -100,57 +117,60 @@
     <a href="my-properties.html">My Properties</a>
   </nav>
 
-  <div class="container">
-    <h2>All Properties</h2>
+  <h1>All Properties</h1>
+  <div id="property-list"></div>
 
+  <script>
+    fetch('http://localhost:3000/api/all-properties?t=' + new Date().getTime())
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch properties');
+        return response.json();
+      })
+      .then(data => {
+        const propertyList = document.getElementById('property-list');
+        propertyList.innerHTML = '';
 
+        if (data.length === 0) {
+          propertyList.innerHTML = '<p style="text-align: center; color: #666;">No properties listed yet.</p>';
+          return;
+        }
 
-    <!-- Add more static or dynamic listings here -->
-  </div>
+        data.forEach((property, index) => {
+          const card = document.createElement('div');
+          card.className = 'property-card';
+          card.style.animationDelay = `${0.2 + index * 0.1}s`;
 
+          const imageUrl = property.image_url
+            ? `http://localhost:3000/uploads/${property.image_url}`
+            : 'https://via.placeholder.com/350x200?text=No+Image';
+
+          const videoUrl = property.video_url
+            ? `http://localhost:3000/uploads/${property.video_url}`
+            : null;
+
+          card.innerHTML = `
+            <h3>${property.title}</h3>
+            <p><strong>Location:</strong> ${property.location}</p>
+            <p><strong>Price:</strong> ₹${property.price}</p>
+            <p><strong>Description:</strong> ${property.description || 'No description provided.'}</p>
+            <p><strong>Owner:</strong> ${property.owner_name} (${property.owner_email})</p>
+            <img src="${imageUrl}" alt="Property Image" />
+            ${
+              videoUrl
+                ? `<video controls><source src="${videoUrl}" type="video/mp4">Your browser does not support video.</video>`
+                : `<p class="no-video">No video available</p>`
+            }
+          `;
+
+          propertyList.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching properties:', error);
+        document.getElementById('property-list').innerHTML =
+          "<p style='color:red; text-align: center;'>Failed to load properties. Please try again later.</p>";
+      });
+  </script>
 </body>
-<script>
-  const container = document.querySelector('.container');
-
-  // Fetch properties from backend API
-  fetch('/api/properties')
-    .then(res => res.json())
-    .then(properties => {
-      renderProperties(properties);
-    })
-    .catch(err => {
-      console.error("Failed to load properties", err);
-      const msg = document.createElement('p');
-      msg.textContent = "Error fetching property listings.";
-      container.appendChild(msg);
-    });
-
-  function renderProperties(properties) {
-    if (!properties || properties.length === 0) {
-      const msg = document.createElement('p');
-      msg.textContent = "No properties listed yet.";
-      container.appendChild(msg);
-      return;
-    }
-
-    properties.forEach((property, index) => {
-      const card = document.createElement('div');
-      card.className = 'property-card';
-      card.style.animationDelay = `${0.2 + index * 0.1}s`;
-
-      card.innerHTML = `
-        <h3>${property.title}</h3>
-        <p>Price: ${property.price}</p>
-        <p>Location: ${property.location}</p>
-        <p>Owner: ${property.ownerName || "N/A"} (${property.ownerEmail || "N/A"})</p>
-        ${property.image_url ? `<img src="/uploads/${property.image_url}" style="max-width: 100%; height: auto; margin-top: 10px;" />` : ''}
-        ${property.video_url ? `<video controls style="max-width: 100%; margin-top: 10px;"><source src="/uploads/${property.video_url}" type="video/mp4">Your browser does not support the video tag.</video>` : ''}
-      `;
-
-      container.appendChild(card);
-    });
-  }
-</script>
-
 
 </html>
