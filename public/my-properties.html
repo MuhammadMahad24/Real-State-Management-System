@@ -147,6 +147,7 @@
     </div>
 
     <script>
+        let editingPropertyId = null;
         const form = document.getElementById("propertyForm");
         const listContainer = document.getElementById("propertiesContainer");
 
@@ -210,42 +211,74 @@
             e.preventDefault();
 
             const formData = new FormData(form);
-            // Ensure ownerId is appended only if currentUser and its id exist
-            if (currentUser && currentUser.id) {
-                formData.append("ownerId", currentUser.id);
-            } else {
-                alert("Error: User not logged in. Please log in again.");
-                window.location.href = "login.html"; // Redirect if ownerId is truly missing
-                return;
-            }
+
+            // Always append ownerId
+            formData.append("ownerId", currentUser.id);
 
             try {
-                const res = await fetch("/api/properties", {
-                    method: "POST",
-                    body: formData
-                });
+                let res;
+                if (editingPropertyId) {
+                    // Update existing property
+                    res = await fetch(`/api/properties/${editingPropertyId}`, {
+                        method: "PUT",
+                        body: formData,
+                    });
+                } else {
+                    // Add new property
+                    res = await fetch("/api/properties", {
+                        method: "POST",
+                        body: formData,
+                    });
+                }
 
                 if (res.ok) {
-                    alert("Property added successfully!");
-                    form.reset(); // Clear form fields
-                    fetchMyProperties(); // Refresh the list
+                    alert(editingPropertyId ? "Property updated!" : "Property added!");
+                    form.reset();
+                    editingPropertyId = null;
+                    form.querySelector("button[type='submit']").textContent = "Add Property";
+                    fetchMyProperties();
                 } else {
-                    // Attempt to parse JSON error message from the server
                     const errorData = await res.json();
-                    alert(`Failed to add property: ${errorData.message || 'Unknown error. Check console for details.'}`);
-                    console.error("Server response error:", errorData);
+                    alert(`Error: ${errorData.message || "Unknown"}`);
                 }
+
             } catch (err) {
-                console.error("Error uploading property:", err);
-                alert("An error occurred during property upload. Please check your internet connection or server status.");
+                console.error("Form submit error:", err);
+                alert("Error submitting form.");
             }
         });
 
-        window.editProperty = function (id) {
-            // In a real application, you'd navigate to an edit form
-            // e.g., window.location.href = `edit-property.html?id=${id}`;
-            alert(`Edit functionality for property ID ${id} not implemented yet.`);
+
+        window.editProperty = async function (id) {
+            try {
+                const res = await fetch(`/api/properties/${id}`);
+                if (!res.ok) throw new Error("Failed to fetch property");
+
+                const property = await res.json();
+
+                // Fill form with property data
+                form.elements["title"].value = property.title;
+                form.elements["location"].value = property.location;
+                form.elements["price"].value = property.price;
+                form.elements["description"].value = property.description || "";
+
+                // Clear file inputs (optional, because browser security doesn't allow setting them)
+                form.elements["image"].value = "";
+                form.elements["video"].value = "";
+
+                editingPropertyId = id;
+
+                // Change submit button text
+                form.querySelector("button[type='submit']").textContent = "Update Property";
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (err) {
+                console.error("Edit fetch error:", err);
+                alert("Failed to load property for editing.");
+            }
         };
+
 
         window.deleteProperty = async function (id) {
             if (!confirm("Are you sure you want to delete this property? This action cannot be undone.")) return;
