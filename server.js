@@ -121,6 +121,61 @@ app.post('/api/login', (req, res) => {
     });
 });
 
+// Update user account
+app.put('/api/users/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, email, password, currentPassword } = req.body;
+
+    if (!name || !email || !password || !currentPassword) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    try {
+        // First verify the current password
+        const userQuery = 'SELECT * FROM users WHERE id = ?';
+        db.query(userQuery, [id], async (err, results) => {
+            if (err) {
+                console.error('Error fetching user:', err);
+                return res.status(500).json({ message: 'Database error while fetching user.' });
+            }
+
+            if (results.length === 0) {
+                return res.status(404).json({ message: 'User not found.' });
+            }
+
+            const user = results[0];
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            
+            if (!isMatch) {
+                return res.status(401).json({ message: 'Current password is incorrect.' });
+            }
+
+            // Hash the new password
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            // Update user information
+            const updateQuery = 'UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?';
+            db.query(updateQuery, [name, email, hashedPassword, id], (updateErr, updateResult) => {
+                if (updateErr) {
+                    console.error('Update error:', updateErr);
+                    if (updateErr.code === 'ER_DUP_ENTRY') {
+                        return res.status(409).json({ message: 'Email already exists. Please use a different email.' });
+                    }
+                    return res.status(500).json({ message: 'Error updating user information.' });
+                }
+
+                res.json({
+                    message: 'Account updated successfully!',
+                    user: { id, name, email }
+                });
+            });
+        });
+    } catch (err) {
+        console.error('Error in user update:', err);
+        res.status(500).json({ message: 'Internal server error during update.' });
+    }
+});
+
 // ---------------------- Property APIs ----------------------
 
 // Upload property (with image/video)
@@ -185,6 +240,21 @@ app.get('/api/all-properties', (req, res) => {
     });
 });
 
+// Get single property by ID
+app.get('/api/properties/:id', (req, res) => {
+    const { id } = req.params;
+    
+    db.query('SELECT * FROM properties WHERE id = ?', [id], (err, results) => {
+        if (err) {
+            console.error('DB Fetch Error for single property:', err);
+            return res.status(500).json({ message: 'Error fetching property.', error: err.message });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Property not found.' });
+        }
+        res.json(results[0]);
+    });
+});
 
 // Delete property by ID
 app.delete('/api/properties/:id', (req, res) => {
@@ -206,6 +276,48 @@ app.delete('/api/properties/:id', (req, res) => {
     });
 });
 
+// Update property by ID
+app.put('/api/properties/:id', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'video', maxCount: 1 }]), (req, res) => {
+    const { id } = req.params;
+    const { title, location, price, description } = req.body;
+
+    if (!title || !location || !price) {
+        return res.status(400).json({ message: 'Title, location, and price are required.' });
+    }
+
+    // Optional updated files
+    const image = req.files && req.files['image'] && req.files['image'][0] ? req.files['image'][0].filename : null;
+    const video = req.files && req.files['video'] && req.files['video'][0] ? req.files['video'][0].filename : null;
+
+    // Build dynamic SQL query depending on whether image/video were uploaded
+    let query = 'UPDATE properties SET title = ?, location = ?, price = ?, description = ?';
+    const params = [title, location, price, description];
+
+    if (image) {
+        query += ', image_url = ?';
+        params.push(image);
+    }
+    if (video) {
+        query += ', video_url = ?';
+        params.push(video);
+    }
+
+    query += ' WHERE id = ?';
+    params.push(id);
+
+    db.query(query, params, (err, result) => {
+        if (err) {
+            console.error('Update Error:', err);
+            return res.status(500).json({ message: 'Failed to update property.', error: err.message });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Property not found.' });
+        }
+
+        res.json({ message: 'Property updated successfully!' });
+    });
+});
 
 // ---------------------- Server Start ----------------------
 app.listen(PORT, () => {
