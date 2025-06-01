@@ -156,8 +156,12 @@ button:hover {
       alert(data.message);
 
       if (res.ok) {
-        // Store user in localStorage
-        localStorage.setItem('loggedInUser', JSON.stringify({ id: 1, email: "user@example.com" }));
+        // Store user in localStorage with actual user data from server
+        localStorage.setItem('loggedInUser', JSON.stringify({
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email
+        }));
 
         window.location.href = "my-properties.html";
       }
