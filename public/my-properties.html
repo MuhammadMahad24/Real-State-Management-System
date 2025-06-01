@@ -194,7 +194,7 @@
                 card.innerHTML = `
                     <h4>${property.title}</h4>
                     <p><strong>Location:</strong> ${property.location}</p>
-                    <p><strong>Price:</strong> ₹${property.price}</p>
+                    <p><strong>Price:</strong> Rs ${property.price}</p>
                     <p><strong>Description:</strong> ${property.description || 'No description provided.'}</p>
                     ${property.image_url ? `<img src="/uploads/${property.image_url}" alt="Property Image" style="max-width: 100%; height: auto; margin-top: 10px;" />` : ''}
                     ${property.video_url ? `<video controls style="max-width: 100%; margin-top: 10px;"><source src="/uploads/${property.video_url}" type="video/mp4" /></video>` : ''}
